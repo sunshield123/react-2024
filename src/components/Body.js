@@ -1,29 +1,49 @@
 import RestaurantCard from "./RestaurantCard";
 import resList from "../utils/mockData";
 import { useState, useEffect } from "react";
+import { API_URL } from "../utils/constants";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState(resList);
+  const [originalListOfRestaurants, setoriginalListOfRestaurants] =
+    useState(resList);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9141417&lng=74.8559568&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
+    const data = await fetch(API_URL);
     const json = await data.json();
-    setListOfRestaurants(
+    setoriginalListOfRestaurants(
       json?.data?.cards[4]?.card.card.gridElements.infoWithStyle.restaurants
     );
+    setListOfRestaurants(originalListOfRestaurants);
   };
-
   console.log("checking what is inside the resList ", resList);
 
   return (
     <div className="body">
-      <div className="search">search</div>
+      <div className="filter">
+        <button
+          className="filter-btn"
+          onClick={() => {
+            const filteredList = listOfRestaurants.filter(
+              (restaurant) => restaurant.info.avgRating > 4.5
+            );
+            setListOfRestaurants(filteredList);
+          }}
+        >
+          Top Ratd Restaurants
+        </button>
+        <button
+          onClick={() => {
+            setListOfRestaurants(originalListOfRestaurants);
+          }}
+        >
+          Reset Filter
+        </button>
+      </div>
       <div className="res-container">
         {/* Why map cant be executed using {} and return statement need to check */}
         {/* what all powerful thing we can do inside the javascript */}

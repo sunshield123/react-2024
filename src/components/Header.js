@@ -1,11 +1,29 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const Header = () => {
+
   [btnName, setBtnName] = useState("login");
+
+  // useEffect(()=>{
+  //   console.log("called every time when component is rendered ")
+  // })
+
+  // useEffect(()=>{
+  //   console.log("called just ones and on initiail load")
+  // },[])
+
+
+  // useEffect(()=>{
+  //   console.log("called whenever btnName changes")
+  // },[btnName])
 
   const handleLogin = (btnName) => {
     setBtnName(btnName === "login" ? "logOut" : "login");
   };
+
+  useEffect(()=>{
+    console.log("use Effect called")
+  },[])
 
   return (
     <div className="header">

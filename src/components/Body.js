@@ -9,7 +9,9 @@ const Body = () => {
   const [originalListOfRestaurants, setoriginalListOfRestaurants] =
     useState(resList);
 
-  let inputValue=``;
+  const [searchText, setSearchText] = useState("");
+
+  let inputValue = ``;
 
   useEffect(() => {
     fetchData();
@@ -23,7 +25,7 @@ const Body = () => {
     );
     setListOfRestaurants(originalListOfRestaurants);
   };
-  
+
   console.log("checking what is inside the resList ", resList);
 
   if (listOfRestaurants.length === 0) {
@@ -35,8 +37,8 @@ const Body = () => {
       <RestaurantCard key={Restaurant.info.id} resData={Restaurant} />
     ));
 
-  const filterTopRated = (listOfRestaurants) => {
-    const filteredList = listOfRestaurants.filter(
+  const filterTopRated = () => {
+    const filteredList = originalListOfRestaurants.filter(
       (restaurant) => restaurant.info.avgRating > 4.5
     );
     setListOfRestaurants(filteredList);
@@ -47,15 +49,27 @@ const Body = () => {
   };
 
   const searchRestaurants = () => {
-    // listOfRestaurants.
-    console.log("inputValue  ",inputValue)
+    const searchedRestaurantList = originalListOfRestaurants.filter((res) =>
+      res.info.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    console.log("checking what is the searchedRestaurantList",searchedRestaurantList)
+
+      setListOfRestaurants(searchedRestaurantList)
+
+    setSearchText("");
   };
 
   return (
     <div className="body">
       <div className="filter">
         <div className="search">
-          <input value={inputValue} type="text"></input>
+          <input
+            value={searchText}
+            onChange={(e) => {
+              setSearchText(e.target.value);
+            }}
+            type="text"
+          ></input>
           <button
             onClick={() => {
               searchRestaurants();
@@ -66,7 +80,7 @@ const Body = () => {
         </div>
         <button
           className="filter-btn"
-          onClick={() => filterTopRated(listOfRestaurants)}
+          onClick={() => filterTopRated()}
         >
           Top Ratd Restaurants
         </button>

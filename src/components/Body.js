@@ -49,13 +49,10 @@ const Body = () => {
   };
 
   const searchRestaurants = () => {
-    const searchedRestaurantList = originalListOfRestaurants.filter((res) =>
-      res.info.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-    console.log("checking what is the searchedRestaurantList",searchedRestaurantList)
-
-      setListOfRestaurants(searchedRestaurantList)
-
+    const searchedRestaurantList = originalListOfRestaurants.filter((res) => {
+      return res.info.name.toLowerCase().includes(searchText.toLowerCase());
+    });
+    setListOfRestaurants(searchedRestaurantList);
     setSearchText("");
   };
 
@@ -78,10 +75,7 @@ const Body = () => {
             search
           </button>
         </div>
-        <button
-          className="filter-btn"
-          onClick={() => filterTopRated()}
-        >
+        <button className="filter-btn" onClick={() => filterTopRated()}>
           Top Ratd Restaurants
         </button>
         <button onClick={() => resetFilter()}>Reset Filter</button>
